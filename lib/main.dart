@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:formation/search.dart';
 import 'package:formation/splash.dart';
 
 void main() {
@@ -17,6 +18,8 @@ class MyApp extends StatelessWidget {
         routes: {
           '/accueil': (context) =>
               Accueil(), // Définissez la route vers la page de destination
+          '/search': (context) =>
+              SearchBar(), // Définissez la route vers la page de destination
         },
         home: SplashScreen());
   }

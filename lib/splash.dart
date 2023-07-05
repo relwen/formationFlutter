@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _startTimer() {
     _timer = Timer(Duration(seconds: 2), () {
-      Navigator.of(context).pushNamed("/accueil");
+      Navigator.of(context).pushNamed("/search");
     });
   }
 
