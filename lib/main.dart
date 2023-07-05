@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:formation/splash.dart';
 
 void main() {
-  runApp( const MyApp());
+  runApp(SplashScreen());
 }
 
 class MyApp extends StatelessWidget {
@@ -10,41 +12,126 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home:Scaffold(
-        floatingActionButton: FloatingActionButton(backgroundColor: Colors.red,onPressed: () {  },
-        child: Icon(Icons.search),),
-        appBar: AppBar(title: Center(child: Text("FORMATION")),backgroundColor: Colors.deepOrange,),
-        body: Column(
+        debugShowCheckedModeBanner: false,
+        routes: {
+          '/accueil': (context) =>
+              Accueil(), // Définissez la route vers la page de destination
+        },
+        home: Scaffold(
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: Colors.red,
+              onPressed: () {},
+              child: Icon(Icons.search),
+            ),
+            appBar: AppBar(
+              title: Center(child: Text("FORMATION")),
+              backgroundColor: Colors.deepOrange,
+            ),
+            body: Accueil()));
+  }
+}
+
+class Accueil extends StatelessWidget {
+  Future<String> fetchTextContent() async {
+    String textContent = await rootBundle.loadString('assets/my_file.txt');
+    return textContent;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        padding: EdgeInsets.only(left: 30, right: 60),
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(color: Colors.red,width: 100,height: 100,),
-                Container(color: Colors.black,width: 100,height: 100,),
-                Container(color: Colors.blue,width: 100,height: 100,),
-              ],
+            Expanded(
+              child: customCard(title: "Home"),
             ),
-            ElevatedButton(onPressed:(){
-              print("click");
-              }, child: Text("Suivant")),
-            Container(
-              alignment: Alignment.center,
-              width: 120,
-              height: 60,
-              child: Text("Nouveau",textAlign: TextAlign.center,style: TextStyle(color:Colors.white,fontSize: 20),),
-              color: Colors.green,
+            SizedBox(
+              width: 50,
+              child: FutureBuilder<String>(
+                future: fetchTextContent(),
+                builder:
+                    (BuildContext context, AsyncSnapshot<String> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done &&
+                      snapshot.hasData) {
+                    return RichText(
+                      text: TextSpan(
+                        text: snapshot.data,
+                        style: TextStyle(color: Colors.black, fontSize: 16),
+                      ),
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
             ),
-            Icon(Icons.account_circle,size: 50,color: Colors.deepOrange,),
-            Icon(Icons.account_balance_wallet,size: 50),
-            Icon(Icons.settings_suggest_outlined,size: 50),
-            Icon(Icons.add_call,size: 50),
+            Expanded(
+              child: Material(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(10),
+                child: InkWell(
+                    onTap: () {
+                      // Navigator.of(context)
+                      //     .push(MaterialPageRoute(builder: (_) => Accueil()));
+                    },
+                    splashColor: Colors.red,
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      width: 150,
+                      height: 150,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.account_balance,
+                              color: Colors.white,
+                              size: 35,
+                            ),
+                            Text(
+                              "Nouveau",
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ]),
+                    )),
+              ),
+            )
           ],
-        )
-      )
+        ),
+      ),
+    );
+  }
+
+  Widget customCard({title, CallbackAction}) {
+    return Material(
+      color: Colors.black,
+      borderRadius: BorderRadius.circular(10),
+      child: InkWell(
+          onTap: () {
+            // Navigator.of(context)
+            //     .push(MaterialPageRoute(builder: (_) => Accueil()));
+          },
+          splashColor: Colors.red,
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            width: 150,
+            height: 150,
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Icon(
+                Icons.account_balance,
+                color: Colors.white,
+                size: 35,
+              ),
+              Text(
+                title,
+                style: TextStyle(color: Colors.white),
+              )
+            ]),
+          )),
     );
   }
 }
