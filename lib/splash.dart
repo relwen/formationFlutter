@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:formation/main.dart';
 import 'package:video_player/video_player.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -9,6 +12,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   late VideoPlayerController _controller;
   bool _isVideoInitialized = false;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -18,8 +22,15 @@ class _SplashScreenState extends State<SplashScreen> {
         setState(() {
           _isVideoInitialized = true;
           _controller.play();
+          _startTimer();
         });
       });
+  }
+
+  void _startTimer() {
+    _timer = Timer(Duration(seconds: 2), () {
+      Navigator.of(context).pushNamed("/accueil");
+    });
   }
 
   @override

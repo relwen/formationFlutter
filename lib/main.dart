@@ -3,7 +3,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:formation/splash.dart';
 
 void main() {
-  runApp(SplashScreen());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -18,17 +18,7 @@ class MyApp extends StatelessWidget {
           '/accueil': (context) =>
               Accueil(), // Définissez la route vers la page de destination
         },
-        home: Scaffold(
-            floatingActionButton: FloatingActionButton(
-              backgroundColor: Colors.red,
-              onPressed: () {},
-              child: Icon(Icons.search),
-            ),
-            appBar: AppBar(
-              title: Center(child: Text("FORMATION")),
-              backgroundColor: Colors.deepOrange,
-            ),
-            body: Accueil()));
+        home: SplashScreen());
   }
 }
 
